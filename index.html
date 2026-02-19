@@ -3,149 +3,80 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PropostaPro | Enterprise Protocol</title>
+    <title>PropostaPro | Sovereign Business Infrastructure</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;400;700;800&display=swap" rel="stylesheet">
 
     <style>
-        :root { --accent: #0066cc; --bg: #ffffff; --surface: #f5f5f7; --text: #1d1d1f; }
-        * { margin: 0; padding: 0; box-sizing: border-box; outline: none; }
+        :root { --accent: #0071e3; --bg: #ffffff; --text: #121212; --border: #e2e2e2; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; color: var(--text); background: var(--bg); -webkit-font-smoothing: antialiased; }
+
+        /* Estrutura Radical NYTCO - Tipografia como Interface */
+        .hero-title { font-size: clamp(3rem, 10vw, 7.5rem); font-weight: 800; letter-spacing: -0.06em; line-height: 0.85; }
+        .sub-heading { font-size: 1.5rem; color: #6e6e73; font-weight: 400; letter-spacing: -0.02em; }
+
+        /* Bento Grid Architecture - Superlist & Notion */
+        .bento-card { background: #fff; border: 1px solid var(--border); border-radius: 32px; padding: 40px; transition: 0.5s cubic-bezier(0.19, 1, 0.22, 1); }
+        .bento-card:hover { border-color: var(--text); box-shadow: 0 30px 60px rgba(0,0,0,0.05); }
+
+        /* Inputs - HubSpot Precision */
+        .premium-input { width: 100%; background: #f5f5f7; border: 2px solid transparent; padding: 20px; border-radius: 18px; font-size: 16px; font-weight: 500; transition: 0.3s; }
+        .premium-input:focus { background: #fff; border-color: var(--accent); outline: none; box-shadow: 0 0 0 5px rgba(0,113,227,0.1); }
+
+        /* CTA - Apple High-Conversion */
+        .cta-button { background: var(--text); color: #fff; padding: 22px 40px; border-radius: 100px; font-weight: 700; font-size: 18px; display: inline-flex; align-items: center; gap: 12px; transition: 0.4s; }
+        .cta-button:hover { transform: scale(1.02); background: #000; }
         
-        body { 
-            font-family: 'Plus Jakarta Sans', sans-serif; 
-            background: var(--bg); 
-            color: var(--text);
-            -webkit-font-smoothing: antialiased;
-            overflow-x: hidden;
-        }
-
-        /* Design System: Apple & Notion Hybrid */
-        .section-container { max-width: 1100px; margin: 0 auto; padding: 0 40px; }
-        
-        .bento-card {
-            background: #ffffff;
-            border: 1px solid #e5e5e7;
-            border-radius: 32px;
-            padding: 48px;
-            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .input-premium {
-            width: 100%;
-            background: var(--surface);
-            border: 1px solid transparent;
-            padding: 20px 24px;
-            border-radius: 16px;
-            font-size: 16px;
-            font-weight: 500;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .input-premium:focus {
-            background: #ffffff;
-            border-color: var(--accent);
-            box-shadow: 0 0 0 4px rgba(0, 102, 204, 0.08);
-        }
-
-        .btn-black {
-            background: #000000;
-            color: #ffffff;
-            padding: 24px 48px;
-            border-radius: 100px;
-            font-size: 18px;
-            font-weight: 700;
-            display: inline-flex;
-            align-items: center;
-            gap: 12px;
-            cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-        }
-
-        .btn-black:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
-            background: #1d1d1f;
-        }
-
-        /* Elementos de Autoridade */
-        .trust-indicator {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 11px;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 0.15em;
-            color: #86868b;
-        }
-
-        .status-dot { width: 8px; height: 8px; border-radius: 50%; background: #22c55e; box-shadow: 0 0 12px #22c55e; }
-
-        /* Typography */
-        h1 { font-size: clamp(48px, 8vw, 88px); font-weight: 800; letter-spacing: -0.05em; line-height: 0.95; }
-        h2 { font-size: clamp(32px, 5vw, 48px); font-weight: 800; letter-spacing: -0.03em; }
-
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-        .reveal { animation: fadeIn 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
-
-        /* View Control */
-        .hidden-view { display: none !important; }
+        @keyframes reveal { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-reveal { animation: reveal 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
     </style>
 </head>
-<body>
+<body class="selection:bg-blue-100 selection:text-blue-900">
 
-    <nav class="sticky top-0 z-[100] bg-white/80 backdrop-blur-xl border-b border-[#e5e5e7]">
-        <div class="section-container h-20 flex items-center justify-between">
-            <div class="flex items-center gap-12">
-                <span class="text-xl font-extrabold tracking-tighter">PropostaPro<span class="text-blue-600">.</span></span>
-                <div class="hidden md:flex gap-8 text-[13px] font-bold text-gray-400">
-                    <span>SECURITY CLOUD</span>
-                    <span>ENTERPRISE HUB</span>
+    <nav class="sticky top-0 z-[100] bg-white/80 backdrop-blur-2xl border-b border-gray-100">
+        <div class="max-w-7xl mx-auto px-8 h-20 flex items-center justify-between">
+            <span class="text-2xl font-extrabold tracking-tighter">PropostaPro<span class="text-blue-600">.</span></span>
+            <div class="flex items-center gap-6">
+                <div class="flex items-center gap-2 bg-green-50 px-4 py-2 rounded-full border border-green-100">
+                    <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                    <span class="text-[10px] font-black text-green-700 uppercase tracking-widest">Protocolo Seguro Ativo</span>
                 </div>
-            </div>
-            <div class="trust-indicator">
-                <div class="status-dot"></div> Protocolo Ativo
             </div>
         </div>
     </nav>
 
-    <main id="view-admin" class="py-24 reveal">
-        <div class="section-container grid lg:grid-cols-12 gap-20 items-center">
-            
+    <main id="view-admin" class="max-w-7xl mx-auto px-8 py-24 animate-reveal">
+        <div class="grid lg:grid-cols-12 gap-20 items-center">
             <div class="lg:col-span-7">
-                <h1 class="mb-10">O fim dos <br><span class="text-blue-600">orçamentos.</span> <br>O início dos <br>contratos.</h1>
-                <p class="text-[22px] text-gray-500 max-w-lg leading-relaxed font-light">
-                    Transforme intenções em compromissos. Uma estrutura minimalista desenhada para projetar autoridade absoluta.
-                </p>
-                <div class="mt-16 flex items-center gap-4 text-xs font-black text-gray-300 uppercase tracking-widest">
-                    <span>Criptografia E2E</span>
+                <h1 class="hero-title mb-10 italic">O poder <br>da sua <br><span class="text-blue-600">autoridade.</span></h1>
+                <p class="sub-heading max-w-lg mb-12">Gere infraestrutura de vendas profissional com design radical focado em fechar negócios de alto valor.</p>
+                <div class="flex gap-4 opacity-30 text-[11px] font-black uppercase tracking-widest">
+                    <span>Criptografia AES-256</span>
                     <span>•</span>
-                    <span>Sem Rastreio de Dados</span>
-                    <span>•</span>
-                    <span>High Fidelity Design</span>
+                    <span>Zero Data Tracking</span>
                 </div>
             </div>
 
             <div class="lg:col-span-5">
-                <div class="bento-card shadow-2xl shadow-gray-200/50">
-                    <h3 class="text-2xl font-bold mb-8 italic">Nova Proposta</h3>
+                <div class="bento-card">
+                    <h3 class="text-2xl font-bold mb-8 tracking-tight">Configurar Nova Proposta</h3>
                     <div class="space-y-4">
-                        <input id="nomeCliente" type="text" placeholder="Nome do Cliente" class="input-premium">
-                        <input id="servico" type="text" placeholder="Descrição do Serviço" class="input-premium">
+                        <input id="in_cliente" type="text" placeholder="Entidade Receptora" class="premium-input">
+                        <input id="in_servico" type="text" placeholder="Solução Estratégica" class="premium-input">
                         <div class="grid grid-cols-2 gap-4">
-                            <input id="valor" type="number" placeholder="Valor (€)" class="input-premium">
-                            <input id="whatsapp" type="text" placeholder="WhatsApp" class="input-premium">
+                            <input id="in_valor" type="number" placeholder="Investimento (€)" class="premium-input">
+                            <input id="in_whatsapp" type="text" placeholder="Canal WhatsApp" class="premium-input">
                         </div>
-                        <button id="btnGerar" onclick="salvarNoBanco()" class="btn-black w-full mt-4">
-                            Gerar Protocolo Seguro
+                        <button onclick="publishProposal()" id="main-btn" class="cta-button w-full justify-center">
+                            Publicar na Cloud Pro
                         </button>
-
-                        <div id="resultado" class="hidden-view mt-10 p-8 bg-blue-50/50 border border-blue-100 rounded-[24px] text-center animate-reveal">
-                            <p class="text-[10px] font-black text-blue-600 uppercase mb-4 tracking-[0.2em]">Link de Acesso Criptografado</p>
-                            <input id="linkFinal" readonly class="w-full bg-white border-none text-center font-mono text-blue-600 text-xs p-4 rounded-xl mb-4">
-                            <button onclick="copiar()" class="text-xs font-bold text-gray-400 hover:text-black transition">Copiar Link de Deploy</button>
+                        
+                        <div id="output-area" class="hidden mt-10 p-8 bg-blue-50/50 rounded-3xl border border-blue-100 animate-reveal">
+                            <p class="text-[10px] font-black text-blue-600 uppercase mb-4 tracking-widest text-center">Protocolo de Visualização Gerado:</p>
+                            <input id="final-link" readonly class="w-full bg-white border-none p-4 rounded-xl text-center text-blue-700 font-mono text-xs mb-4 shadow-inner">
+                            <button onclick="copyToClipboard()" class="w-full text-xs font-bold text-gray-400 hover:text-black transition uppercase tracking-widest">Copiar para o Decisor</button>
                         </div>
                     </div>
                 </div>
@@ -153,117 +84,103 @@
         </div>
     </main>
 
-    <div id="view-client" class="hidden-view min-h-screen bg-[#f5f5f7] flex items-center justify-center p-6 py-20">
-        <div class="max-w-[900px] w-full bg-white rounded-[48px] shadow-sm p-12 md:p-24 reveal relative overflow-hidden">
-            
-            <div class="absolute top-12 right-12">
-                <div class="flex items-center gap-2 bg-gray-50 px-4 py-2 rounded-full border border-gray-100">
-                    <span class="status-dot"></span>
-                    <span class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Verificado</span>
+    <div id="view-client" class="hidden min-h-screen bg-[#fafafa] flex items-center justify-center p-6 py-20">
+        <div class="max-w-[850px] w-full bg-white rounded-[56px] shadow-sm p-12 md:p-24 animate-reveal">
+            <header class="flex justify-between items-start mb-24 border-b border-gray-100 pb-12">
+                <div>
+                    <span class="text-[11px] font-black text-blue-600 uppercase tracking-[0.4em] mb-4 block">Documento de Venda Digital</span>
+                    <h2 id="out_cliente" class="text-5xl md:text-7xl font-extrabold tracking-tighter italic">...</h2>
                 </div>
-            </div>
-
-            <header class="mb-24 border-b border-gray-100 pb-12">
-                <p class="text-blue-600 font-black text-xs uppercase tracking-[0.4em] mb-6">Proposta Digital Oficial</p>
-                <h2 id="prop-cliente" class="mb-8">...</h2>
-                <div class="flex justify-between items-center text-sm font-bold text-gray-400">
-                    <span id="prop-id">...</span>
-                    <span id="data-atual"></span>
+                <div class="text-right">
+                    <p id="out_id" class="text-[10px] font-mono text-gray-300 bg-gray-50 px-3 py-1 rounded-full mb-2">ID: ...</p>
+                    <p class="text-xs font-bold text-gray-400" id="out_data"></p>
                 </div>
             </header>
 
-            <div class="grid md:grid-cols-12 gap-20 mb-24">
+            <div class="grid md:grid-cols-12 gap-16 mb-24">
                 <div class="md:col-span-7">
-                    <h4 class="text-[11px] font-black text-gray-400 uppercase tracking-widest mb-6 italic">Escopo do Acordo</h4>
-                    <p id="prop-servico" class="text-3xl font-medium leading-[1.1]"></p>
-                    <p class="mt-8 text-gray-500 leading-relaxed font-light">Este documento atesta a capacidade técnica e comercial para a execução integral dos serviços listados acima.</p>
+                    <h4 class="text-[10px] font-black text-gray-300 uppercase tracking-widest mb-6">01 / Âmbito do Serviço</h4>
+                    <p id="out_servico" class="text-3xl font-medium leading-[1.1]"></p>
+                    <p class="mt-8 text-gray-400 font-light italic">Entrega garantida sob os protocolos de qualidade PropostaPro Enterprise.</p>
                 </div>
-                <div class="md:col-span-5 bg-gray-50 p-10 rounded-[40px] border border-gray-100 flex flex-col justify-center">
-                    <h4 class="text-[11px] font-black text-gray-400 uppercase tracking-widest mb-4 italic">Total Estimado</h4>
-                    <p id="prop-valor" class="text-[56px] font-extrabold tracking-tighter mb-4"></p>
-                    <p class="text-[10px] font-bold text-gray-400">Faturação imediata após aceite.</p>
+                <div class="md:col-span-5 bg-gray-50 p-10 rounded-[40px] border border-gray-100">
+                    <h4 class="text-[10px] font-black text-gray-300 uppercase tracking-widest mb-4">02 / Investimento</h4>
+                    <p id="out_valor" class="text-[52px] font-extrabold tracking-tighter mb-4"></p>
+                    <div class="flex items-center gap-2 text-[10px] font-bold text-green-600 uppercase">
+                        <span class="w-1.5 h-1.5 bg-green-600 rounded-full"></span> Verificado
+                    </div>
                 </div>
             </div>
 
-            <div class="space-y-8">
-                <button onclick="aceitarProposta()" class="btn-black w-full text-2xl py-8 rounded-[32px]">Assinar e Confirmar</button>
-                <div class="text-center">
-                    <p class="text-[10px] font-bold text-gray-400 uppercase tracking-[0.3em]">Ambiente com Certificado SSL Ativo</p>
-                </div>
-            </div>
+            <button onclick="approveNow()" class="cta-button w-full text-2xl py-8 rounded-[32px]">Confirmar e Iniciar Acordo</button>
         </div>
     </div>
 
     <script>
-        // ENGINE CONFIGURATION
-        const SUPABASE_URL = 'https://tfzpfryytdguwiyoeout.supabase.co';
-        const SUPABASE_KEY = 'sb_publishable_plAvEwolNmyg_8fznVJelg_8rpadXAF';
-        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        const SB_URL = 'https://tfzpfryytdguwiyoeout.supabase.co';
+        const SB_KEY = 'sb_publishable_plAvEwolNmyg_8fznVJelg_8rpadXAF';
+        const client = supabase.createClient(SB_URL, SB_KEY);
 
-        window.onload = async () => {
-            const urlParams = new URLSearchParams(window.location.search);
-            const propId = urlParams.get('id');
-            if (propId) {
-                document.getElementById('view-client').classList.remove('hidden-view');
-                carregarProposta(propId);
-            } else {
-                document.getElementById('view-admin').classList.remove('hidden-view');
-            }
-        };
+        async function publishProposal() {
+            const b = document.getElementById('main-btn');
+            const data = {
+                cliente: document.getElementById('in_cliente').value,
+                servico: document.getElementById('in_servico').value,
+                valor: document.getElementById('in_valor').value,
+                whatsapp_vendedor: document.getElementById('in_whatsapp').value,
+                link_id: Math.random().toString(36).substring(2, 11)
+            };
 
-        async function salvarNoBanco() {
-            const nome = document.getElementById('nomeCliente').value;
-            const servico = document.getElementById('servico').value;
-            const valor = document.getElementById('valor').value;
-            const whatsapp = document.getElementById('whatsapp').value;
-            const btn = document.getElementById('btnGerar');
+            if(!data.cliente || !data.servico || !data.valor) return alert("Erro: Preencha todos os campos vitais.");
 
-            if(!nome || !servico || !valor) return alert("Erro: Parâmetros mandatórios não preenchidos.");
+            b.innerText = "EFETUANDO DEPLOY...";
+            b.disabled = true;
 
-            btn.innerText = "DEPLOYING...";
-            btn.disabled = true;
-
-            const linkId = Math.random().toString(36).substring(2, 10);
-            const { error } = await supabaseClient.from('propostas').insert([{ 
-                cliente: nome, servico: servico, valor: valor, link_id: linkId, whatsapp_vendedor: whatsapp 
-            }]);
+            const { error } = await client.from('propostas').insert([data]);
 
             if (error) {
-                alert("Database Connection Failed.");
-                btn.disabled = false;
-                btn.innerText = "RE-DEPLOY";
+                alert("Erro de Infraestrutura: Contacte o Administrador.");
+                b.innerText = "TENTAR DE NOVO";
+                b.disabled = false;
             } else {
-                document.getElementById('resultado').classList.remove('hidden-view');
-                document.getElementById('linkFinal').value = window.location.origin + window.location.pathname + "?id=" + linkId;
-                btn.innerText = "CONCLUÍDO";
-                btn.style.background = "#22c55e";
+                document.getElementById('output-area').classList.remove('hidden');
+                document.getElementById('final-link').value = window.location.origin + window.location.pathname + "?id=" + data.link_id;
+                b.innerText = "PROPOSTA ATIVA";
+                b.style.background = "#22c55e";
             }
         }
 
-        let whatsappVendedor = "";
-        async function carregarProposta(id) {
-            const { data } = await supabaseClient.from('propostas').select('*').eq('link_id', id).single();
-            if (data) {
-                document.getElementById('prop-cliente').innerText = data.cliente;
-                document.getElementById('prop-servico').innerText = data.servico;
-                document.getElementById('prop-valor').innerText = "€ " + parseFloat(data.valor).toLocaleString('pt-PT', {minimumFractionDigits: 2});
-                document.getElementById('prop-id').innerText = "CERT: " + data.link_id.toUpperCase();
-                document.getElementById('data-atual').innerText = new Date().toLocaleDateString('pt-PT');
-                whatsappVendedor = data.whatsapp_vendedor;
+        async function loadApp() {
+            const id = new URLSearchParams(window.location.search).get('id');
+            if (id) {
+                document.getElementById('view-admin').classList.add('hidden');
+                document.getElementById('view-client').classList.remove('hidden');
+                
+                const { data } = await client.from('propostas').select('*').eq('link_id', id).single();
+                
+                if (data) {
+                    document.getElementById('out_cliente').innerText = data.cliente;
+                    document.getElementById('out_servico').innerText = data.servico;
+                    document.getElementById('out_valor').innerText = "€" + parseFloat(data.valor).toLocaleString('pt-PT', {minimumFractionDigits: 2});
+                    document.getElementById('out_id').innerText = "CERT: " + data.link_id.toUpperCase();
+                    document.getElementById('out_data').innerText = new Date().toLocaleDateString('pt-PT');
+                    window.seller = data.whatsapp_vendedor;
+                }
             }
         }
 
-        function aceitarProposta() {
-            const msg = encodeURIComponent("Olá! Validamos o protocolo e aceitamos a proposta comercial. Como podemos dar seguimento?");
-            window.open(`https://wa.me/${whatsappVendedor}?text=${msg}`, '_blank');
+        function copyToClipboard() {
+            const input = document.getElementById('final-link');
+            input.select();
+            document.execCommand('copy');
+            alert("Protocolo copiado com segurança.");
         }
 
-        function copiar() {
-            const el = document.getElementById("linkFinal");
-            el.select();
-            document.execCommand("copy");
-            alert("Protocolo copiado para transferência segura.");
+        function approveNow() {
+            window.open(`https://wa.me/${window.seller}?text=Aceito oficialmente a proposta. Vamos avançar com o protocolo de trabalho.`);
         }
+
+        window.onload = loadApp;
     </script>
 </body>
 </html>

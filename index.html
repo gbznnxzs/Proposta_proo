@@ -95,4 +95,112 @@
                     <div class="p-1 bg-gradient-to-r from-blue-500 to-purple-500 rounded-2xl">
                         <div class="bg-[#020617] p-6 rounded-[calc(1rem-1px)] text-center">
                             <p class="text-xs font-bold text-slate-400 mb-4 uppercase tracking-[0.3em]">Acesso Criptografado Pronto</p>
-                            <input id="linkFinal"
+                            <input id="linkFinal" readonly class="w-full bg-white/5 border-none text-center font-mono text-blue-400 text-xs mb-4 p-3 rounded-lg">
+                            <button onclick="copiar()" class="text-sm font-bold hover:text-blue-400 transition underline underline-offset-8">Copiar para Clipboard</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div id="view-client" class="hidden min-h-screen flex items-center justify-center p-6">
+        <div class="max-w-3xl w-full glass-card rounded-[4rem] p-16 relative overflow-hidden">
+            <div class="flex justify-between items-center mb-20">
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 bg-blue-600 rounded-lg"></div>
+                    <span class="font-bold tracking-tighter">OFFICIAL PROPOSAL</span>
+                </div>
+                <div id="prop-id" class="text-[10px] font-mono text-slate-500 border border-white/10 px-3 py-1 rounded-full uppercase">...</div>
+            </div>
+
+            <h2 class="text-6xl font-bold tracking-tighter mb-4 leading-none">Draft de <br><span class="text-blue-500 italic">Investimento.</span></h2>
+            <p class="text-slate-400 text-xl mb-16">Preparado para <span id="prop-cliente" class="text-white underline decoration-blue-500 underline-offset-8 font-medium">...</span></p>
+
+            <div class="grid md:grid-cols-2 gap-12 mb-20">
+                <div>
+                    <h4 class="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-4">Serviço/Produto</h4>
+                    <p id="prop-servico" class="text-2xl font-bold leading-tight"></p>
+                </div>
+                <div>
+                    <h4 class="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-4">Total Liquidado</h4>
+                    <p id="prop-valor" class="text-5xl font-black text-white"></p>
+                </div>
+            </div>
+
+            <div class="flex flex-col md:flex-row gap-4">
+                <button onclick="aceitarProposta()" class="neo-btn flex-1 py-6 rounded-3xl text-xl font-bold shadow-2xl">ACEITAR E INICIAR</button>
+                <button class="bg-white/5 hover:bg-white/10 py-6 px-10 rounded-3xl font-bold transition">DOWNLOAD PDF</button>
+            </div>
+            
+            <p class="text-center mt-12 text-[10px] text-slate-600 font-bold uppercase tracking-[0.5em]">Verified by PropostaPro Enterprise</p>
+        </div>
+    </div>
+
+    <script>
+        const SUPABASE_URL = 'https://tfzpfryytdguwiyoeout.supabase.co';
+        const SUPABASE_KEY = 'sb_publishable_plAvEwolNmyg_8fznVJelg_8rpadXAF';
+        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        window.onload = async () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const propId = urlParams.get('id');
+            if (propId) {
+                document.getElementById('view-client').classList.remove('hidden');
+                carregarProposta(propId);
+            } else {
+                document.getElementById('view-admin').classList.remove('hidden');
+            }
+        };
+
+        async function salvarNoBanco() {
+            const nome = document.getElementById('nomeCliente').value;
+            const servico = document.getElementById('servico').value;
+            const valor = document.getElementById('valor').value;
+            const whatsapp = document.getElementById('whatsapp').value;
+            const btn = document.getElementById('btnGerar');
+
+            if(!nome || !servico || !valor) return alert("Parâmetros insuficientes.");
+
+            btn.innerText = "EXECUTANDO DEPLOY...";
+            btn.disabled = true;
+
+            const linkId = Math.random().toString(36).substring(2, 9);
+            const { error } = await supabaseClient.from('propostas').insert([{ cliente: nome, servico: servico, valor: valor, link_id: linkId, whatsapp_vendedor: whatsapp }]);
+
+            if (error) {
+                alert("Falha no sistema: " + error.message);
+                btn.disabled = false;
+            } else {
+                document.getElementById('resultado').classList.remove('hidden');
+                document.getElementById('linkFinal').value = window.location.origin + window.location.pathname + "?id=" + linkId;
+                btn.innerText = "DEPLOY COMPLETO";
+            }
+        }
+
+        let whatsappVendedor = "";
+        async function carregarProposta(id) {
+            const { data } = await supabaseClient.from('propostas').select('*').eq('link_id', id).single();
+            if (data) {
+                document.getElementById('prop-cliente').innerText = data.cliente;
+                document.getElementById('prop-servico').innerText = data.servico;
+                document.getElementById('prop-valor').innerText = "€ " + data.valor;
+                document.getElementById('prop-id').innerText = "REF: " + data.link_id;
+                whatsappVendedor = data.whatsapp_vendedor;
+            }
+        }
+
+        function aceitarProposta() {
+            const msg = encodeURIComponent("Fiquei impressionado com a proposta. Gostaria de formalizar o contrato!");
+            window.open(`https://wa.me/${whatsappVendedor}?text=${msg}`, '_blank');
+        }
+
+        function copiar() {
+            const el = document.getElementById("linkFinal");
+            el.select();
+            document.execCommand("copy");
+            alert("Protocolo copiado.");
+        }
+    </script>
+</body>
+</html>

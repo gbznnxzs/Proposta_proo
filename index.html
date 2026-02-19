@@ -3,174 +3,199 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PropostaPro | Enterprise Sales Protocol</title>
+    <title>PropostaPro | Enterprise Protocol</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;400;600;800&display=swap" rel="stylesheet">
 
     <style>
-        :root { --brand: #000000; --accent: #0066cc; --border: #e5e5e7; --bg: #ffffff; }
+        :root { --accent: #0066cc; --bg: #ffffff; --surface: #f5f5f7; --text: #1d1d1f; }
+        * { margin: 0; padding: 0; box-sizing: border-box; outline: none; }
         
         body { 
-            font-family: 'Inter', -apple-system, system-ui, sans-serif; 
-            background: var(--bg); color: var(--brand);
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background: var(--bg); 
+            color: var(--text);
             -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
         }
 
-        /* Estrutura Radical NYT: Linhas finas, tipografia forte */
-        .border-thin { border: 1px solid var(--border); }
-        .grid-layout { display: grid; grid-template-columns: repeat(12, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); }
-        .grid-cell { background: var(--bg); padding: 40px; }
-
-        /* HubSpot Input Style */
-        .form-input {
-            width: 100%; border: 1px solid #d2d2d7; padding: 16px; border-radius: 8px;
-            font-size: 16px; transition: all 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+        /* Design System: Apple & Notion Hybrid */
+        .section-container { max-width: 1100px; margin: 0 auto; padding: 0 40px; }
+        
+        .bento-card {
+            background: #ffffff;
+            border: 1px solid #e5e5e7;
+            border-radius: 32px;
+            padding: 48px;
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        .form-input:focus { border-color: var(--accent); outline: none; box-shadow: 0 0 0 4px rgba(0, 102, 204, 0.1); }
 
-        /* Apple/Shopify Button Style */
-        .btn-primary {
-            background: var(--brand); color: white; padding: 18px 36px;
-            border-radius: 12px; font-weight: 600; letter-spacing: -0.02em;
-            transition: all 0.3s; display: inline-flex; align-items: center; justify-content: center;
+        .input-premium {
+            width: 100%;
+            background: var(--surface);
+            border: 1px solid transparent;
+            padding: 20px 24px;
+            border-radius: 16px;
+            font-size: 16px;
+            font-weight: 500;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
 
-        /* Elementos de Confiança (Trust Points) */
-        .badge-secure { background: #f5f5f7; border-radius: 6px; padding: 4px 12px; font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; color: #86868b; display: inline-flex; align-items: center; gap: 6px; }
-        .dot { width: 6px; height: 6px; background: #22c55e; border-radius: 50%; }
+        .input-premium:focus {
+            background: #ffffff;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 4px rgba(0, 102, 204, 0.08);
+        }
 
-        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-        .animate-reveal { animation: slideUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1); }
+        .btn-black {
+            background: #000000;
+            color: #ffffff;
+            padding: 24px 48px;
+            border-radius: 100px;
+            font-size: 18px;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .btn-black:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            background: #1d1d1f;
+        }
+
+        /* Elementos de Autoridade */
+        .trust-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: #86868b;
+        }
+
+        .status-dot { width: 8px; height: 8px; border-radius: 50%; background: #22c55e; box-shadow: 0 0 12px #22c55e; }
+
+        /* Typography */
+        h1 { font-size: clamp(48px, 8vw, 88px); font-weight: 800; letter-spacing: -0.05em; line-height: 0.95; }
+        h2 { font-size: clamp(32px, 5vw, 48px); font-weight: 800; letter-spacing: -0.03em; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        .reveal { animation: fadeIn 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
+
+        /* View Control */
+        .hidden-view { display: none !important; }
     </style>
 </head>
 <body>
 
-    <nav class="sticky top-0 z-50 bg-white/90 backdrop-blur-xl border-b border-thin">
-        <div class="max-w-7xl mx-auto px-6 h-[64px] flex items-center justify-between">
-            <div class="flex items-center gap-10">
-                <span class="text-xl font-bold tracking-tighter">PropostaPro<span class="text-blue-600">.</span></span>
-                <div class="hidden md:flex gap-8 text-[13px] font-medium text-gray-500">
-                    <a href="#" class="hover:text-black transition">Segurança</a>
-                    <a href="#" class="hover:text-black transition">Infraestrutura SaaS</a>
-                    <a href="#" class="hover:text-black transition">Enterprise</a>
+    <nav class="sticky top-0 z-[100] bg-white/80 backdrop-blur-xl border-b border-[#e5e5e7]">
+        <div class="section-container h-20 flex items-center justify-between">
+            <div class="flex items-center gap-12">
+                <span class="text-xl font-extrabold tracking-tighter">PropostaPro<span class="text-blue-600">.</span></span>
+                <div class="hidden md:flex gap-8 text-[13px] font-bold text-gray-400">
+                    <span>SECURITY CLOUD</span>
+                    <span>ENTERPRISE HUB</span>
                 </div>
             </div>
-            <div class="flex items-center gap-4">
-                <div class="badge-secure"><div class="dot"></div> Conexão Segura</div>
+            <div class="trust-indicator">
+                <div class="status-dot"></div> Protocolo Ativo
             </div>
         </div>
     </nav>
 
-    <header class="py-24 text-center animate-reveal">
-        <div class="max-w-4xl mx-auto px-6">
-            <h1 class="text-[52px] md:text-[84px] font-extrabold tracking-tight leading-[0.95] mb-8">A infraestrutura que <br>valida o seu valor.</h1>
-            <p class="text-[20px] md:text-[24px] text-gray-500 max-w-2xl mx-auto mb-12">O PropostaPro utiliza protocolos de segurança SSL e arquitetura distribuída para garantir que os seus contratos sejam inquebráveis e profissionais.</p>
-            <div class="flex flex-col md:flex-row justify-center gap-4">
-                <button onclick="document.getElementById('app').scrollIntoView({behavior:'smooth'})" class="btn-primary">Configurar Nova Proposta</button>
-                <div class="flex items-center justify-center gap-2 text-sm font-semibold px-6 py-4">
-                    <img src="https://cdn-icons-png.flaticon.com/512/2092/2092663.png" class="w-5 opacity-50" alt="Shield"> 
-                    Encriptação AES-256
-                </div>
-            </div>
-        </div>
-    </header>
-
-    <section class="max-w-7xl mx-auto px-6 mb-32">
-        <div class="grid-layout rounded-3xl overflow-hidden">
-            <div class="grid-cell col-span-12 md:col-span-8">
-                <h3 class="text-2xl font-bold mb-4">Hierarquia de Informação.</h3>
-                <p class="text-gray-500">Inspirado na Apple.com, organizamos os dados de forma que o seu cliente compreenda o valor do serviço antes mesmo de ver o preço final.</p>
-            </div>
-            <div class="grid-cell col-span-12 md:col-span-4 bg-gray-50">
-                <h3 class="text-2xl font-bold mb-4">Privacy-First.</h3>
-                <p class="text-sm text-gray-500">Otimizado para navegadores Brave e Tor. Não rastreamos os dados do seu cliente final.</p>
-            </div>
-        </div>
-    </section>
-
-    <section id="app" class="py-24 bg-[#fbfbfd] border-t border-thin">
-        <div class="max-w-2xl mx-auto px-6">
-            <div class="bg-white border-thin rounded-[32px] p-10 shadow-sm">
-                <header class="mb-10 text-center">
-                    <span class="text-blue-600 font-bold text-xs uppercase tracking-[0.2em]">Configurador SaaS</span>
-                    <h2 class="text-3xl font-bold mt-2">Deploy de Contrato</h2>
-                </header>
-                
-                <div class="space-y-6">
-                    <div>
-                        <label class="text-[11px] font-bold text-gray-400 uppercase tracking-widest ml-1">Entidade Receptora</label>
-                        <input id="nomeCliente" type="text" placeholder="Nome do Cliente" class="form-input mt-1">
-                    </div>
-                    <div>
-                        <label class="text-[11px] font-bold text-gray-400 uppercase tracking-widest ml-1">Âmbito do Projeto</label>
-                        <input id="servico" type="text" placeholder="Ex: Consultoria Estratégica" class="form-input mt-1">
-                    </div>
-                    <div class="grid grid-cols-2 gap-4">
-                        <div>
-                            <label class="text-[11px] font-bold text-gray-400 uppercase tracking-widest ml-1">Investimento (€)</label>
-                            <input id="valor" type="number" placeholder="0.00" class="form-input mt-1">
-                        </div>
-                        <div>
-                            <label class="text-[11px] font-bold text-gray-400 uppercase tracking-widest ml-1">WhatsApp de Suporte</label>
-                            <input id="whatsapp" type="text" placeholder="351..." class="form-input mt-1">
-                        </div>
-                    </div>
-
-                    <button id="btnGerar" onclick="salvarNoBanco()" class="btn-primary w-full mt-4">Publicar Proposta na Cloud</button>
-
-                    <div id="resultado" class="hidden mt-8 p-6 bg-gray-50 border-thin rounded-2xl animate-reveal">
-                        <p class="text-center text-xs font-bold text-gray-400 mb-4 uppercase">Link Único de Visualização Segura:</p>
-                        <input id="linkFinal" readonly class="w-full bg-white border-thin p-3 rounded-lg text-center text-blue-600 font-mono text-sm mb-4">
-                        <div class="flex justify-center">
-                            <button onclick="copiar()" class="text-xs font-bold uppercase tracking-widest text-gray-500 hover:text-black transition">Copiar para Clipboard</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    <main id="view-admin" class="py-24 reveal">
+        <div class="section-container grid lg:grid-cols-12 gap-20 items-center">
             
-            <p class="text-center mt-10 text-[11px] text-gray-400 uppercase font-medium">Infraestrutura verificada via Supabase Protocol</p>
-        </div>
-    </section>
-
-    <div id="view-client" class="hidden fixed inset-0 z-[100] bg-white overflow-y-auto">
-        <div class="max-w-[850px] mx-auto py-24 px-8 sm:px-12">
-            <header class="flex justify-between items-start border-b border-black pb-12 mb-20">
-                <div>
-                    <h2 class="text-[12px] font-black uppercase tracking-[0.3em] text-gray-400 mb-6">Documento Oficial de Venda</h2>
-                    <h3 id="prop-cliente" class="text-[52px] md:text-[72px] font-extrabold leading-none tracking-tighter">...</h3>
+            <div class="lg:col-span-7">
+                <h1 class="mb-10">O fim dos <br><span class="text-blue-600">orçamentos.</span> <br>O início dos <br>contratos.</h1>
+                <p class="text-[22px] text-gray-500 max-w-lg leading-relaxed font-light">
+                    Transforme intenções em compromissos. Uma estrutura minimalista desenhada para projetar autoridade absoluta.
+                </p>
+                <div class="mt-16 flex items-center gap-4 text-xs font-black text-gray-300 uppercase tracking-widest">
+                    <span>Criptografia E2E</span>
+                    <span>•</span>
+                    <span>Sem Rastreio de Dados</span>
+                    <span>•</span>
+                    <span>High Fidelity Design</span>
                 </div>
-                <div class="text-right">
-                    <p id="prop-id" class="font-mono text-[10px] text-gray-400 border border-gray-200 px-3 py-1 rounded-full mb-4 inline-block tracking-widest">...</p>
-                    <p class="text-xs font-bold" id="data-atual"></p>
+            </div>
+
+            <div class="lg:col-span-5">
+                <div class="bento-card shadow-2xl shadow-gray-200/50">
+                    <h3 class="text-2xl font-bold mb-8 italic">Nova Proposta</h3>
+                    <div class="space-y-4">
+                        <input id="nomeCliente" type="text" placeholder="Nome do Cliente" class="input-premium">
+                        <input id="servico" type="text" placeholder="Descrição do Serviço" class="input-premium">
+                        <div class="grid grid-cols-2 gap-4">
+                            <input id="valor" type="number" placeholder="Valor (€)" class="input-premium">
+                            <input id="whatsapp" type="text" placeholder="WhatsApp" class="input-premium">
+                        </div>
+                        <button id="btnGerar" onclick="salvarNoBanco()" class="btn-black w-full mt-4">
+                            Gerar Protocolo Seguro
+                        </button>
+
+                        <div id="resultado" class="hidden-view mt-10 p-8 bg-blue-50/50 border border-blue-100 rounded-[24px] text-center animate-reveal">
+                            <p class="text-[10px] font-black text-blue-600 uppercase mb-4 tracking-[0.2em]">Link de Acesso Criptografado</p>
+                            <input id="linkFinal" readonly class="w-full bg-white border-none text-center font-mono text-blue-600 text-xs p-4 rounded-xl mb-4">
+                            <button onclick="copiar()" class="text-xs font-bold text-gray-400 hover:text-black transition">Copiar Link de Deploy</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div id="view-client" class="hidden-view min-h-screen bg-[#f5f5f7] flex items-center justify-center p-6 py-20">
+        <div class="max-w-[900px] w-full bg-white rounded-[48px] shadow-sm p-12 md:p-24 reveal relative overflow-hidden">
+            
+            <div class="absolute top-12 right-12">
+                <div class="flex items-center gap-2 bg-gray-50 px-4 py-2 rounded-full border border-gray-100">
+                    <span class="status-dot"></span>
+                    <span class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Verificado</span>
+                </div>
+            </div>
+
+            <header class="mb-24 border-b border-gray-100 pb-12">
+                <p class="text-blue-600 font-black text-xs uppercase tracking-[0.4em] mb-6">Proposta Digital Oficial</p>
+                <h2 id="prop-cliente" class="mb-8">...</h2>
+                <div class="flex justify-between items-center text-sm font-bold text-gray-400">
+                    <span id="prop-id">...</span>
+                    <span id="data-atual"></span>
                 </div>
             </header>
 
-            <div class="grid md:grid-cols-12 gap-16 mb-24">
+            <div class="grid md:grid-cols-12 gap-20 mb-24">
                 <div class="md:col-span-7">
-                    <h4 class="text-[11px] font-black uppercase tracking-widest mb-6">01 / Resumo Executivo</h4>
-                    <p id="prop-servico" class="text-2xl font-medium leading-tight text-gray-900"></p>
-                    <p class="mt-6 text-gray-500 leading-relaxed italic">Este orçamento contempla todos os requisitos discutidos previamente, garantindo a entrega sob os padrões de qualidade PropostaPro.</p>
+                    <h4 class="text-[11px] font-black text-gray-400 uppercase tracking-widest mb-6 italic">Escopo do Acordo</h4>
+                    <p id="prop-servico" class="text-3xl font-medium leading-[1.1]"></p>
+                    <p class="mt-8 text-gray-500 leading-relaxed font-light">Este documento atesta a capacidade técnica e comercial para a execução integral dos serviços listados acima.</p>
                 </div>
-                <div class="md:col-span-5 bg-gray-50 p-8 rounded-3xl">
-                    <h4 class="text-[11px] font-black uppercase tracking-widest mb-6 text-gray-400">02 / Investimento</h4>
-                    <p id="prop-valor" class="text-5xl font-extrabold tracking-tighter mb-4"></p>
-                    <div class="flex items-center gap-2 text-[10px] font-bold text-green-600">
-                        <div class="w-2 h-2 bg-green-600 rounded-full"></div> PAGAMENTO ÚNICO DISPONÍVEL
-                    </div>
+                <div class="md:col-span-5 bg-gray-50 p-10 rounded-[40px] border border-gray-100 flex flex-col justify-center">
+                    <h4 class="text-[11px] font-black text-gray-400 uppercase tracking-widest mb-4 italic">Total Estimado</h4>
+                    <p id="prop-valor" class="text-[56px] font-extrabold tracking-tighter mb-4"></p>
+                    <p class="text-[10px] font-bold text-gray-400">Faturação imediata após aceite.</p>
                 </div>
             </div>
 
-            <div class="flex flex-col gap-4">
-                <button onclick="aceitarProposta()" class="btn-primary text-xl py-6">Aceitar Proposta e Iniciar</button>
-                <button onclick="window.print()" class="text-xs font-bold text-gray-400 hover:text-black transition tracking-widest">GERAR CÓPIA PDF (CTRL+P)</button>
+            <div class="space-y-8">
+                <button onclick="aceitarProposta()" class="btn-black w-full text-2xl py-8 rounded-[32px]">Assinar e Confirmar</button>
+                <div class="text-center">
+                    <p class="text-[10px] font-bold text-gray-400 uppercase tracking-[0.3em]">Ambiente com Certificado SSL Ativo</p>
+                </div>
             </div>
         </div>
     </div>
 
     <script>
+        // ENGINE CONFIGURATION
         const SUPABASE_URL = 'https://tfzpfryytdguwiyoeout.supabase.co';
         const SUPABASE_KEY = 'sb_publishable_plAvEwolNmyg_8fznVJelg_8rpadXAF';
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
@@ -179,8 +204,10 @@
             const urlParams = new URLSearchParams(window.location.search);
             const propId = urlParams.get('id');
             if (propId) {
-                document.getElementById('view-client').classList.remove('hidden');
+                document.getElementById('view-client').classList.remove('hidden-view');
                 carregarProposta(propId);
+            } else {
+                document.getElementById('view-admin').classList.remove('hidden-view');
             }
         };
 
@@ -191,9 +218,9 @@
             const whatsapp = document.getElementById('whatsapp').value;
             const btn = document.getElementById('btnGerar');
 
-            if(!nome || !servico || !valor) return alert("Erro: Preencha todos os campos obrigatórios.");
+            if(!nome || !servico || !valor) return alert("Erro: Parâmetros mandatórios não preenchidos.");
 
-            btn.innerText = "Sincronizando com a Nuvem...";
+            btn.innerText = "DEPLOYING...";
             btn.disabled = true;
 
             const linkId = Math.random().toString(36).substring(2, 10);
@@ -202,13 +229,14 @@
             }]);
 
             if (error) {
-                alert("Database Error: Falha na conexão segura.");
+                alert("Database Connection Failed.");
                 btn.disabled = false;
-                btn.innerText = "Tentar novamente";
+                btn.innerText = "RE-DEPLOY";
             } else {
-                document.getElementById('resultado').classList.remove('hidden');
+                document.getElementById('resultado').classList.remove('hidden-view');
                 document.getElementById('linkFinal').value = window.location.origin + window.location.pathname + "?id=" + linkId;
-                btn.innerText = "Publicado!";
+                btn.innerText = "CONCLUÍDO";
+                btn.style.background = "#22c55e";
             }
         }
 
@@ -219,14 +247,14 @@
                 document.getElementById('prop-cliente').innerText = data.cliente;
                 document.getElementById('prop-servico').innerText = data.servico;
                 document.getElementById('prop-valor').innerText = "€ " + parseFloat(data.valor).toLocaleString('pt-PT', {minimumFractionDigits: 2});
-                document.getElementById('prop-id').innerText = "CERT-ID: " + data.link_id.toUpperCase();
+                document.getElementById('prop-id').innerText = "CERT: " + data.link_id.toUpperCase();
                 document.getElementById('data-atual').innerText = new Date().toLocaleDateString('pt-PT');
                 whatsappVendedor = data.whatsapp_vendedor;
             }
         }
 
         function aceitarProposta() {
-            const msg = encodeURIComponent("Confirmado! Analisamos a proposta via PropostaPro e decidimos avançar. Quais são os próximos passos?");
+            const msg = encodeURIComponent("Olá! Validamos o protocolo e aceitamos a proposta comercial. Como podemos dar seguimento?");
             window.open(`https://wa.me/${whatsappVendedor}?text=${msg}`, '_blank');
         }
 
@@ -234,7 +262,7 @@
             const el = document.getElementById("linkFinal");
             el.select();
             document.execCommand("copy");
-            alert("Link seguro copiado.");
+            alert("Protocolo copiado para transferência segura.");
         }
     </script>
 </body>
